@@ -3,13 +3,15 @@ package com.ST.speertechnologiesandroidassessment.repositories
 import com.ST.speertechnologiesandroidassessment.GithubProfile
 import com.ST.speertechnologiesandroidassessment.network.GithubProfileService
 import com.ST.speertechnologiesandroidassessment.network.RetrofitService
+import retrofit2.Retrofit
+import javax.inject.Inject
 
-object GithubProfilesRepo {
+class GithubProfilesRepo @Inject constructor(val retrofit: Retrofit) {
 
 
     suspend fun fetchProfile(username: String): GithubProfile? {
 
-        val profileService = RetrofitService.getRetrofit().create(GithubProfileService::class.java)
+        val profileService = retrofit.create(GithubProfileService::class.java)
         val profileResponse = profileService.getProfile(username).execute()
         val followersResponse = profileService.getFollowers(username).execute()
 
