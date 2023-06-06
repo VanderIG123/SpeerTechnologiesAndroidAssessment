@@ -1,24 +1,34 @@
-package com.ST.speertechnologiesandroidassessment.network
+package com.ST.speertechnologiesandroidassessment.di
 
+import com.ST.speertechnologiesandroidassessment.network.RetrofitService
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class AppModule {
 
 
-object RetrofitService {
-     const val baseUrl = "https://api.github.com/"
-
-    fun getRetrofit(): Retrofit {
+    @Singleton
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .client(getGlobalHeaderConfig())
-            .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .baseUrl(RetrofitService.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-
-    private fun getGlobalHeaderConfig(): OkHttpClient {
+    @Singleton
+    @Provides
+    fun provideHttpClient(): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Accept", "application/vnd.github+json")

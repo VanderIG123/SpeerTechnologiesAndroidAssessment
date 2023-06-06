@@ -1,7 +1,7 @@
 package com.ST.speertechnologiesandroidassessment
 
 import android.os.Bundle
-import android.provider.ContactsContract.Profile
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +13,12 @@ import com.ST.speertechnologiesandroidassessment.utils.Utils.hide
 import com.ST.speertechnologiesandroidassessment.utils.Utils.removeFromParent
 import com.ST.speertechnologiesandroidassessment.utils.Utils.show
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
-    private val viewModel by viewModels<MainActivityViewModel>()
+    private val viewModel by viewModels<ProfileViewModel>()
     private var mBinding: FragmentProfileBinding? = null
     var searchKeyword = ""
     var profileTapListener: ProfileTapListener? = null
@@ -42,6 +43,10 @@ class ProfileFragment : Fragment() {
 
         viewModel.fetchGithubProfile(searchKeyword)
 
+        mBinding?.root?.setOnRefreshListener {
+            viewModel?.fetchGithubProfile(searchKeyword)
+            mBinding?.root?.isRefreshing = false
+        }
     }
 
     private fun handleGithubProfileResult(profileState: ProfileState?) {
@@ -56,6 +61,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showGithubProfileDetails(profile: GithubProfile) {
+        Log.e("test","showig profile details...")
         mBinding?.progressBar?.removeFromParent()
         mBinding?.notingTxt?.hide()
         mBinding?.githubProfileContainer?.show()
