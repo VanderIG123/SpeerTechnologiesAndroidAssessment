@@ -8,10 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class ProfileAdapter(val followers: List<GithubProfile>) :
+class ProfileAdapter(
+    val followers: List<GithubProfile>,
+    val profileTapListener: ProfileTapListener? = null
+) :
     RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.profile_layout, parent, false)
         )
@@ -23,7 +27,7 @@ class ProfileAdapter(val followers: List<GithubProfile>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val profile = followers[position]
-        holder.bind(profile)
+        holder.bind(profile, profileTapListener)
     }
 
 
@@ -33,16 +37,18 @@ class ProfileAdapter(val followers: List<GithubProfile>) :
         val userName = view.findViewById<TextView>(R.id.username_Txt)
         val email = view.findViewById<TextView>(R.id.email_txt)
 
-        fun bind(profile: GithubProfile) {
+        fun bind(profile: GithubProfile, profileTapListener: ProfileTapListener? = null) {
             Glide
                 .with(view.context)
                 .load(profile.avatarUrl)
                 .into(profileImg)
-            userName.text = profile.name
+            userName.text = profile.login
             email.text = profile.email
 
+            view.setOnClickListener {
+                profileTapListener?.onTap(profile.login)
+            }
         }
-
     }
 
 }

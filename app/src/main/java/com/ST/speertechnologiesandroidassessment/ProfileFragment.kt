@@ -1,6 +1,7 @@
 package com.ST.speertechnologiesandroidassessment
 
 import android.os.Bundle
+import android.provider.ContactsContract.Profile
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ class ProfileFragment : Fragment() {
     private val viewModel by viewModels<MainActivityViewModel>()
     private var mBinding: FragmentProfileBinding? = null
     var searchKeyword = ""
+    var profileTapListener: ProfileTapListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +74,7 @@ class ProfileFragment : Fragment() {
             .into(mBinding?.githubProfileCard?.profileImg!!)
 
 
-        val adapter = ProfileAdapter(profile.followerList)
+        val adapter = ProfileAdapter(profile.followerList, profileTapListener)
         mBinding?.followersList?.layoutManager = LinearLayoutManager(requireContext())
         mBinding?.followersList?.adapter = adapter
     }

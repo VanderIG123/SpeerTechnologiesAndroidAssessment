@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
     private fun beginSearch(searchKeyword: String) {
         val profileFragment = ProfileFragment()
         profileFragment.searchKeyword = searchKeyword
+        profileFragment.profileTapListener = object : ProfileTapListener {
+            override fun onTap(profileLogin: String) {
+                beginSearch(profileLogin)
+            }
+        }
 
 
         supportFragmentManager
