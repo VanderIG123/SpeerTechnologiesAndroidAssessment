@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .addToBackStack(null)
-            .add(R.id.fragment_container, profileFragment)
+            .replace(R.id.fragment_container, profileFragment)
             .commit()
     }
 

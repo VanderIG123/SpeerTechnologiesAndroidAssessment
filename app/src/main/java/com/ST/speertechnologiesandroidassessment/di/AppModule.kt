@@ -1,6 +1,7 @@
 package com.ST.speertechnologiesandroidassessment.di
 
 import com.ST.speertechnologiesandroidassessment.network.RetrofitService
+import com.ST.speertechnologiesandroidassessment.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +33,7 @@ class AppModule {
         return OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Accept", "application/vnd.github+json")
-                .addHeader("Authorization", "Bearer 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")
+                .addHeader("Authorization", "Bearer ${Constants.GITUB_API_KEY}")
                 .addHeader("X-GitHub-Api-Version", "2022-11-28")
                 .build()
             chain.proceed(newRequest)
